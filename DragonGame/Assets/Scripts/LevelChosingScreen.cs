@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class LevelChosingScreen : MonoBehaviour
 {
     [SerializeField] private List<LevelButton> levelButtons;
+    [SerializeField] private GameObject loadingScreen;
 
     private SaveSystem _saveSystem;
     private GameProgress _levelProgress;
@@ -41,6 +42,11 @@ public class LevelChosingScreen : MonoBehaviour
         {
             levelButtons[_levelProgress.Levels.Count].GetComponent<Button>().interactable = true;
         }
+    }
+
+    public void ShowLoadingScreen()
+    {
+        loadingScreen.SetActive(true);
     }
 }
 

@@ -5,6 +5,7 @@ public class Rocket : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 10;
     [SerializeField] private int damage = 34;
+    [SerializeField] private AudioClip explosionSound;
 
     private Rigidbody _rb;
     
@@ -20,6 +21,7 @@ public class Rocket : MonoBehaviour
         if (other.TryGetComponent(out Boss boss))
         {
             boss.GetDamage(damage);
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position);
             // show hit particles
             Destroy(gameObject);
         }

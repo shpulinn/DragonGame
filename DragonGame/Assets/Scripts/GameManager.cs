@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,6 +29,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject secondStageDoor;
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject gameWinScreen;
+    [SerializeField] private Button nextLevelButton;
+
+    [Space] [Header("SOUNDS")] 
+    [SerializeField] private AudioClip winSound;
+    [SerializeField] private AudioClip loseSound;
 
     private int _currentCoins;
 
@@ -37,6 +44,8 @@ public class GameManager : MonoBehaviour
     private bool _isPaused = false;
 
     public bool IsPaused => _isPaused;
+
+    private Transform _camersTransform;
 
     public void TogglePause()
     {
@@ -56,10 +65,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (Camera.main != null) _camersTransform = Camera.main.transform;
         _isPaused = false;
         maxHumanCatchAmount = humansParentObject.transform.childCount;
         catchCountText.text = $"0/{maxHumanCatchAmount}";
         coinsCountText.text = "0";
+
+        nextLevelButton.onClick.AddListener(LoadNextLevel);
         
         saveSystem = new SaveSystem();
         levelProgress = saveSystem.LoadGame();
@@ -130,12 +142,12 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("GAME OVER");
         gameOverScreen.SetActive(true);
         _isPaused = true;
         // при проигрыше сбрасываем количество собранных монет
         levelProgress.Levels[levelNumber].CoinsCollected = 0;
         saveSystem.SaveGame(levelProgress);
+        AudioSource.PlayClipAtPoint(loseSound, _camersTransform.position);
     }
 
     public void GameWin()
@@ -143,6 +155,7 @@ public class GameManager : MonoBehaviour
         gameWinScreen.SetActive(true);
         _isPaused = true;
         CompleteLevel(levelNumber);
+        AudioSource.PlayClipAtPoint(winSound, _camersTransform.position);
     }
     
     public void CompleteLevel(int levelNumber)
@@ -158,5 +171,10 @@ public class GameManager : MonoBehaviour
         }
 
         saveSystem.SaveGame(levelProgress);
+    }
+
+    public void LoadNextLevel()
+    {
+        SceneManager.LoadScene(levelNumber + 2);
     }
 }

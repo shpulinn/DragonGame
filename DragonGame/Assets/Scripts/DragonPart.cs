@@ -4,7 +4,7 @@ public class DragonPart : MonoBehaviour
 {
     [SerializeField] private Transform target;
 
-    void Update()
+    void LateUpdate()
     {
         if (GameManager.Instance.IsPaused)
         {

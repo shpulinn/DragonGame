@@ -16,15 +16,20 @@ public class LevelButton : MonoBehaviour
 
     private Button _btn;
 
+    private LevelChosingScreen _levelChosingScreen;
+
     private void Start()
     {
         _btn = GetComponent<Button>();
         _btn.onClick.AddListener(OnClick);
+
+        _levelChosingScreen = FindObjectOfType<LevelChosingScreen>();
     }
 
     private void OnClick()
     {
         SceneManager.LoadScene(levelNumber + 1);
+        _levelChosingScreen.ShowLoadingScreen();
     }
 
     public void SetStars(int coinsOnLevelMax, int coinsCollectedAmount)

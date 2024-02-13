@@ -15,6 +15,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button levelsButton;
     [SerializeField] private Button exitLevelsButton;
     [SerializeField] private Button playButton;
+    
+    private SaveSystem _saveSystem;
+    private GameProgress _levelProgress;
+    private int maxLevelNumber = 1;
 
     private void Start()
     {
@@ -23,6 +27,19 @@ public class MainMenu : MonoBehaviour
         levelsButton.onClick.AddListener(OpenLevelsButton);
         exitLevelsButton.onClick.AddListener(CloseLevelsButton);
         playButton.onClick.AddListener(PlayButton);
+        
+        _saveSystem = new SaveSystem();
+        _levelProgress = _saveSystem.LoadGame();
+
+        if (_levelProgress.Levels.Count < 1)
+        {
+            return;
+        }
+        if (_levelProgress.Levels[_levelProgress.Levels.Count - 1].WasCompletedBefore)
+        {
+            maxLevelNumber = _levelProgress.Levels.Count + 1;
+        }
+        else maxLevelNumber = _levelProgress.Levels.Count;
     }
 
     private void OpenSettingsButton() => settingsScreen.SetActive(true);
@@ -33,6 +50,8 @@ public class MainMenu : MonoBehaviour
     private void PlayButton()
     {
         // logic
-        SceneManager.LoadScene(1);
+        if (maxLevelNumber < 1)
+            maxLevelNumber = 1;
+        SceneManager.LoadScene(maxLevelNumber);
     }
 }
