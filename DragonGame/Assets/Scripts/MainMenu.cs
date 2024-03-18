@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     [Header("Screens")]
     [SerializeField] private GameObject settingsScreen;
     [SerializeField] private GameObject levelsScreen;
+    [SerializeField] private GameObject shopScreen;
 
     [Header("Buttons")] 
     [SerializeField] private Button settingsButton;
@@ -15,6 +16,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button levelsButton;
     [SerializeField] private Button exitLevelsButton;
     [SerializeField] private Button playButton;
+    [SerializeField] private Button shopButton;
     
     private SaveSystem _saveSystem;
     private GameProgress _levelProgress;
@@ -27,6 +29,7 @@ public class MainMenu : MonoBehaviour
         levelsButton.onClick.AddListener(OpenLevelsButton);
         exitLevelsButton.onClick.AddListener(CloseLevelsButton);
         playButton.onClick.AddListener(PlayButton);
+        shopButton.onClick.AddListener(ShopButton);
         
         _saveSystem = new SaveSystem();
         _levelProgress = _saveSystem.LoadGame();
@@ -46,6 +49,8 @@ public class MainMenu : MonoBehaviour
     private void CloseSettingsButton() => settingsScreen.SetActive(false);
     private void OpenLevelsButton() => levelsScreen.SetActive(true);
     private void CloseLevelsButton() => levelsScreen.SetActive(false);
+
+    private void ShopButton() => shopScreen.SetActive(true);
 
     private void PlayButton()
     {

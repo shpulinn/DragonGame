@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,6 +14,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button menuButtonGameOver;
     [SerializeField] private Button menuButtonGameWin;
     [SerializeField] private GameObject pauseScreen;
+    [SerializeField] private TextMeshProUGUI timerText;
+
+    private bool _timerStarted = false;
+    private float _timer = 0;
     
     void Start()
     {
@@ -20,6 +26,24 @@ public class UIManager : MonoBehaviour
         menuButtonPause.onClick.AddListener(LoadMenu);
         menuButtonGameOver.onClick.AddListener(LoadMenu);
         menuButtonGameWin.onClick.AddListener(LoadMenu);
+
+        if (timerText)
+        {
+            timerText.text = "0:00";
+        }
+    }
+
+    private void Update()
+    {
+        if (_timerStarted == false) return;
+
+        _timer -= Time.deltaTime;
+        timerText.text = String.Format("{0:0}:{1:00}", (int)_timer / 60, (int)_timer % 60);
+        if (_timer <= 0)
+        {
+            _timerStarted = false;
+            timerText.text = "0:00";
+        }
     }
 
     private void Pause()
@@ -40,5 +64,11 @@ public class UIManager : MonoBehaviour
     {
         Unpause();
         SceneManager.LoadScene("Menu");
+    }
+
+    public void StartTimer(float timeInSeconds)
+    {
+        _timer = timeInSeconds;
+        _timerStarted = true;
     }
 }

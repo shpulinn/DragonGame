@@ -8,6 +8,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public delegate void OnGameOver();
+
+    public OnGameOver OnGameOverEvent;
+
     public static GameManager Instance;
 
     #region SAVES
@@ -45,7 +49,9 @@ public class GameManager : MonoBehaviour
 
     public bool IsPaused => _isPaused;
 
-    private Transform _camersTransform;
+    private Transform _cameraTransform;
+
+    private LevelManager _levelManager;
 
     public void TogglePause()
     {
@@ -61,11 +67,13 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+
+        _levelManager = FindObjectOfType<LevelManager>();
     }
 
     private void Start()
     {
-        if (Camera.main != null) _camersTransform = Camera.main.transform;
+        if (Camera.main != null) _cameraTransform = Camera.main.transform;
         _isPaused = false;
         maxHumanCatchAmount = humansParentObject.transform.childCount;
         catchCountText.text = $"0/{maxHumanCatchAmount}";
@@ -110,7 +118,6 @@ public class GameManager : MonoBehaviour
         {
             levelProgress.Levels[levelNumber] = new LevelProgress { CoinsCollected = 1 };
         }
-
         //saveSystem.SaveGame(levelProgress);
     } 
 
@@ -131,7 +138,8 @@ public class GameManager : MonoBehaviour
         if (_currentZoneActive >= 3)
         {
             // open door 2
-            secondStageDoor.SetActive(false);
+            //secondStageDoor.SetActive(false);
+            _levelManager.CompleteFirstStage();
         }
     }
 
@@ -142,20 +150,25 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (!_isPaused)
+        {
+            AudioSource.PlayClipAtPoint(loseSound, _cameraTransform.position);
+        }
         gameOverScreen.SetActive(true);
+        OnGameOverEvent?.Invoke();
         _isPaused = true;
         // при проигрыше сбрасываем количество собранных монет
         levelProgress.Levels[levelNumber].CoinsCollected = 0;
         saveSystem.SaveGame(levelProgress);
-        AudioSource.PlayClipAtPoint(loseSound, _camersTransform.position);
     }
 
     public void GameWin()
     {
         gameWinScreen.SetActive(true);
         _isPaused = true;
+        OnGameOverEvent?.Invoke();
         CompleteLevel(levelNumber);
-        AudioSource.PlayClipAtPoint(winSound, _camersTransform.position);
+        AudioSource.PlayClipAtPoint(winSound, _cameraTransform.position);
     }
     
     public void CompleteLevel(int levelNumber)
@@ -170,11 +183,21 @@ public class GameManager : MonoBehaviour
             levelProgress.Levels[levelNumber] = new LevelProgress { IsCompletedNow = true };
         }
 
+        levelProgress.Coins += _currentCoins;
         saveSystem.SaveGame(levelProgress);
     }
 
     public void LoadNextLevel()
     {
         SceneManager.LoadScene(levelNumber + 2);
+        /*
+        LevelLoader loader = FindObjectOfType<LevelLoader>();
+        if (loader == null)
+        {
+            Debug.Log("NO LOADER ON SCENE");
+            return;
+        }
+        loader.LoadLevel(levelNumber + 2);
+        */
     }
 }

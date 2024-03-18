@@ -1,11 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using InsaneOne.TailEffect;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Dragon : MonoBehaviour
 {
+    public delegate void OnObjectDestroyed();
+
+    public OnObjectDestroyed OnObjectDestroyedEvent;
+
     private bool _isPressed = false;
     
     public float speed = 1f;
@@ -23,21 +29,70 @@ public class Dragon : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
 
     private Vector3 previousPosition;
+    
+    private List<NavMeshAgent> navAgents;
+
+    public TextMeshProUGUI testText;
+    
+    [SerializeField] private float headRotationSpeed;
+
+    private bool _isGameOver = false;
+
+    private TailFx _tailFx;
+
+    private bool _isCrushBuffed = false;
+
+    private Vector3 _normalScale;
+    private float _normalSpaceBetween;
+
+    private UIManager _uiManager;
+
+    public void SetSpaceBetween(float value)
+    {
+        _tailFx.spaceBetween = value;
+    }
+
+    public float GetSpaceBetween()
+    {
+        return _tailFx.spaceBetween;
+    }
 
     void Start()
     {
+        _tailFx = GetComponent<TailFx>();
+
+        _normalScale = transform.GetChild(0).localScale;
+        _normalSpaceBetween = GetSpaceBetween();
+        
         _dragonLine = GetComponent<DragonLine>();
         tailSegments = new List<GameObject>();
 
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        _navMeshAgent.updateRotation = false;
+
+        GameManager.Instance.OnGameOverEvent += OnGameOver;
+
+        _uiManager = FindObjectOfType<UIManager>();
         
         // Создаем начальный размер змейки
         for (int i = 0; i < tailPrefabs.Count; i++)
         {
-            AddTail(tailPrefabs[i]);
+            //AddTail(tailPrefabs[i]);
+        }
+        
+        navAgents = new List<NavMeshAgent>();
+        foreach (var segment in tailSegments)
+        {
+            //var agent = segment.GetComponent<NavMeshAgent>();
+            //navAgents.Add(agent);
         }
 
         previousPosition = transform.position;
+    }
+
+    private void OnGameOver()
+    {
+        _isGameOver = true;
     }
 
     void AddTail(DragonPart prefab)
@@ -54,56 +109,28 @@ public class Dragon : MonoBehaviour
      
     void Update()
     {
-        // Move the head
-        //if (_isPressed == false) return;
-
-        if (GameManager.Instance.IsPaused)
+        if (_isGameOver)
         {
             return;
         }
-
+        
         if (InputManager.Instance.Joystick)
         {
             _navMeshAgent.isStopped = false;
+            for (int i =  0; i < navAgents.Count; i++)
+            {
+                navAgents[i].isStopped = false;
+            }
             _navMeshAgent.SetDestination(transform.position + InputManager.Instance.MoveVector);
+            
+            var rotation = Quaternion.LookRotation(InputManager.Instance.MoveVector.normalized);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, headRotationSpeed * Time.deltaTime);
+
         }
         else
         {
             _navMeshAgent.SetDestination(transform.position);
             _navMeshAgent.isStopped = true;
-        }
-            
-        /*
-        if (!_navMeshAgent.pathPending)
-        {
-            if (_navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance)
-            {
-                if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
-                {
-                    //_animator.SetBool(animRunningBool, false);
-                    //_isRunning = false;
-                    _navMeshAgent.isStopped = true;
-                }
-            }
-        }*/
-
-
-        if (InputManager.Instance.Joystick)
-        {
-            Vector3 previousSegmentPosition = transform.position;
-            tailSegments[0].transform.position = Vector3.Slerp(tailSegments[0].transform.position, previousSegmentPosition, Time.deltaTime * speed);
-            // Обновляем позиции хвоста, чтобы они следовали за головой
-            for (int i =  1; i < tailSegments.Count; i++)
-            {
-                // Вычисляем позицию предыдущего сегмента
-                previousSegmentPosition = tailSegments[i -  1].transform.position;
-                // Перемещаем текущий сегмент к позиции предыдущего
-                while (Vector3.Distance(tailSegments[i].transform.position, tailSegments[i-1].transform.position) > tailDistance)
-                {
-                    tailSegments[i].transform.position = Vector3.Slerp(tailSegments[i].transform.position,
-                        previousSegmentPosition, Time.deltaTime * speed);
-                }
-            }
         }
     }
 
@@ -112,6 +139,15 @@ public class Dragon : MonoBehaviour
         if (other.TryGetComponent(out ICollidable collidable))
         {
             collidable.OnPlayerCollision();
+        }
+
+        if (_isCrushBuffed)
+        {
+            if (other.TryGetComponent(out IDestroyable destroyable))
+            {
+                destroyable.OnPlayerCollide();
+                OnObjectDestroyedEvent?.Invoke();
+            }
         }
     }
 
@@ -132,18 +168,22 @@ public class Dragon : MonoBehaviour
     {
         _isPressed = false;
     }
-    
-    #region Testing
 
-    public void SetTailDistance(float value)
+    public void ApplyScaleBuff(Vector3 newScale, float newSpaceBetween, float duration)
     {
-        tailDistance = value;
+        _isCrushBuffed = true;
+        //transform.GetChild(0).localScale = newScale;
+        _tailFx.ApplyScale(newScale);
+        SetSpaceBetween(newSpaceBetween);
+        Invoke(nameof(RemoveBuff), duration);
+        _uiManager.StartTimer(duration);
     }
 
-    public void SetTailSpeed(float value)
+    public void RemoveBuff()
     {
-        speed = value;
+        _isCrushBuffed = false;
+        //transform.GetChild(0).localScale = _normalScale;
+        _tailFx.ApplyScale(_normalScale);
+        SetSpaceBetween(_normalSpaceBetween);
     }
-    
-    #endregion
 }

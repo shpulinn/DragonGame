@@ -29,7 +29,7 @@ public class SaveSystem
         }
         else
         {
-            return new GameProgress { Levels = new Dictionary<int, LevelProgress>() };
+            return new GameProgress { Levels = new Dictionary<int, LevelProgress>(), Coins = 0 };
         }
     }
 
@@ -45,8 +45,9 @@ public class SaveSystem
 [JsonObject(MemberSerialization.OptIn)]
 public class GameProgress
 {
-    [JsonProperty]
-    public Dictionary<int, LevelProgress> Levels { get; set; }
+    [JsonProperty] public Dictionary<int, LevelProgress> Levels { get; set; }
+    
+    [JsonProperty] public int Coins { get; set; }
 }
 
 [JsonObject(MemberSerialization.OptIn)]
