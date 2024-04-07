@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] private bool isBuffOnLevel;
-    [SerializeField] private GameObject stageDoor;
+    [SerializeField] private StageDoor stageDoor;
     
     public void CompleteFirstStage()
     {
@@ -20,7 +20,8 @@ public class LevelManager : MonoBehaviour
         else
         {
             // другая логика выполнения 1 стадии (например открытие двери)
-            stageDoor.SetActive(false);
+            //stageDoor.SetActive(false);
+            stageDoor.OpenDoor();
         }
     }
 }

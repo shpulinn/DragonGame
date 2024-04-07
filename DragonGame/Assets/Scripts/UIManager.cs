@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button menuButtonGameWin;
     [SerializeField] private GameObject pauseScreen;
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private Color normalColor;
+    [SerializeField] private Color countingColor;
 
     private bool _timerStarted = false;
     private float _timer = 0;
@@ -43,6 +45,7 @@ public class UIManager : MonoBehaviour
         {
             _timerStarted = false;
             timerText.text = "0:00";
+            timerText.color = normalColor;
         }
     }
 
@@ -70,5 +73,6 @@ public class UIManager : MonoBehaviour
     {
         _timer = timeInSeconds;
         _timerStarted = true;
+        timerText.color = countingColor;
     }
 }

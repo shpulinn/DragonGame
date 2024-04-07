@@ -164,6 +164,11 @@ public class GameManager : MonoBehaviour
 
     public void GameWin()
     {
+        if (_isPaused)
+        {
+            // если уже стоит пауза, вероятно игра была проиграна
+            return;
+        }
         gameWinScreen.SetActive(true);
         _isPaused = true;
         OnGameOverEvent?.Invoke();

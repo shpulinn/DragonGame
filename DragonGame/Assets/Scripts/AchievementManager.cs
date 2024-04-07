@@ -7,7 +7,7 @@ public class AchievementManager : MonoBehaviour
     public static AchievementManager Instance { get; private set; }
 
     [SerializeField] private GameObject UIprefab;
-    [SerializeField] private Sprite standartIcon;
+    [SerializeField] private List<Sprite> icons;
 
     private Dictionary<string, Achievement> achievements;
 
@@ -37,7 +37,7 @@ public class AchievementManager : MonoBehaviour
         Achievement firstBuffEver = new Achievement();
         firstBuffEver.Id = "0";
         firstBuffEver.Description = "You just got a buff!";
-        firstBuffEver.icon = standartIcon;
+        firstBuffEver.icon = icons[0];
         
         RegisterAchievement(firstBuffEver);
     }

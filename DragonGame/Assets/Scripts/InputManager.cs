@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+    public delegate void OnInput();
+
+    public OnInput OnInputHandled;
+    
     public static InputManager Instance;
 
     [SerializeField] private LayerMask clickableLayerMask;
@@ -15,6 +19,7 @@ public class InputManager : MonoBehaviour
 
     private Vector3 _moveVector;
 
+    private bool _canControl = true;
 
     #region Properties
     
@@ -37,6 +42,12 @@ public class InputManager : MonoBehaviour
     
     private void Update()
     {
+        if (!_canControl)
+        {
+            _joystick = false;
+            return;
+        }
+        
         //MousePosition = Mouse.current.position.ReadValue();
         if (_moveJoystick.Horizontal == 0 && _moveJoystick.Vertical == 0)
         {
@@ -46,6 +57,7 @@ public class InputManager : MonoBehaviour
 
         _joystick = true;
         _moveVector = new Vector3(_moveJoystick.Horizontal, 0, _moveJoystick.Vertical);
+        OnInputHandled?.Invoke();
     }
 
     public void ToggleControl(bool value)
@@ -53,6 +65,17 @@ public class InputManager : MonoBehaviour
         if (value == _inputUI)
             return;
         _inputUI = value;
+    }
+
+    public void DisposeControl()
+    {
+        _canControl = false;
+        Invoke(nameof(EnableControl), 1f);
+    }
+
+    private void EnableControl()
+    {
+        _canControl = true;
     }
     
     
