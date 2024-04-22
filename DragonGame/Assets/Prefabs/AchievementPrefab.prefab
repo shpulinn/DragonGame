@@ -132,6 +132,7 @@ MonoBehaviour:
   popupPanel: {fileID: 7593020577074891216}
   descriptionText: {fileID: 3487995185384626641}
   iconImage: {fileID: 8867933914519771119}
+  popupSound: {fileID: 8300000, guid: 9626216ad5158bd4aa68baf68efd77ef, type: 3}
 --- !u!1 &7938553465362832372
 GameObject:
   m_ObjectHideFlags: 0

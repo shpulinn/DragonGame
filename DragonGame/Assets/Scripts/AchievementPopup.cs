@@ -9,6 +9,7 @@ public class AchievementPopup : MonoBehaviour
     public GameObject popupPanel; // Ссылка на панель, содержащую информацию о достижении
     public TextMeshProUGUI descriptionText; // Ссылка на текстовый элемент для описания
     public Image iconImage; // Ссылка на элемент изображения для иконки
+    public AudioClip popupSound;
 
     public void ShowAchievement(string description, Sprite icon)
     {
@@ -16,6 +17,10 @@ public class AchievementPopup : MonoBehaviour
         iconImage.sprite = icon;
         popupPanel.SetActive(true);
         Invoke(nameof(HideAchievement), onScreenDuration);
+        if (popupSound)
+        {
+            AudioSource.PlayClipAtPoint(popupSound, Camera.main.transform.position);
+        }
     }
 
     public void HideAchievement()

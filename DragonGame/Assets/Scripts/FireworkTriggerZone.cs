@@ -13,6 +13,7 @@ public class FireworkTriggerZone : MonoBehaviour, ICollidable
     [SerializeField] private GameObject rocketPrefab;
 
     [SerializeField] private Transform bossTransform;
+    [SerializeField] private AudioClip interactionSound;
     //[SerializeField] private float activeTime = 3f;
 
     private bool _isActive = false;
@@ -46,6 +47,10 @@ public class FireworkTriggerZone : MonoBehaviour, ICollidable
                 var rocket = Instantiate(rocketPrefab, firework.transform.position, Quaternion.identity);
                 rocket.transform.LookAt(bossTransform);
                 //Vector3 trajectory = bossTransform.position - transform.position;
+            }
+            if (interactionSound)
+            {
+                AudioSource.PlayClipAtPoint(interactionSound, transform.position);
             }
         }
     }

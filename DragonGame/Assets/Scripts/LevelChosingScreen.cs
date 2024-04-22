@@ -40,6 +40,11 @@ public class LevelChosingScreen : MonoBehaviour
         // ставим доступным уровень, следующий за крайним пройденным на данный момент
         if (_levelProgress.Levels[_levelProgress.Levels.Count - 1].WasCompletedBefore)
         {
+            Debug.LogWarning(_levelProgress.Levels.Count + " НЕ ЗАБУДЬ ВЫКЛЮЧИТЬ ОСТАНОВКУ ПРОГРЕССА");
+            if (_levelProgress.Levels.Count >= 4)
+            {
+                return;
+            }
             levelButtons[_levelProgress.Levels.Count].GetComponent<Button>().interactable = true;
         }
     }

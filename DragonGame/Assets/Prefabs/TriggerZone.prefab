@@ -71,6 +71,7 @@ MonoBehaviour:
   disabledMat: {fileID: 2100000, guid: 8d424b47865f5cc46ba4a1516ccd86c1, type: 2}
   activeMat: {fileID: 2100000, guid: 3ef49371b9fea4845a6c099a7e0378bc, type: 2}
   activeTime: 3
+  interactionSound: {fileID: 8300000, guid: 170f2d9d5000369488223787e2d7b06b, type: 3}
 --- !u!1 &7108174674966578748
 GameObject:
   m_ObjectHideFlags: 0

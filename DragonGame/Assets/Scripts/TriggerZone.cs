@@ -8,6 +8,7 @@ public class TriggerZone : MonoBehaviour, ICollidable
     [SerializeField] private Material disabledMat;
     [SerializeField] private Material activeMat;
     [SerializeField] private float activeTime = 3f;
+    [SerializeField] private AudioClip interactionSound;
 
     private bool _isActive = false;
     private float _timer = 0;
@@ -34,6 +35,10 @@ public class TriggerZone : MonoBehaviour, ICollidable
             _isActive = true;
             planeMesh.material = activeMat;
             GameManager.Instance.ActivateZone();
+            if (interactionSound)
+            {
+                AudioSource.PlayClipAtPoint(interactionSound, transform.position);
+            }
         }
     }
 }

@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         if (Camera.main != null) _cameraTransform = Camera.main.transform;
         _isPaused = false;
-        maxHumanCatchAmount = humansParentObject.transform.childCount;
+        //    maxHumanCatchAmount = humansParentObject.transform.childCount;
         catchCountText.text = $"0/{maxHumanCatchAmount}";
         coinsCountText.text = "0";
 

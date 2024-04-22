@@ -36,7 +36,7 @@ public class AchievementManager : MonoBehaviour
 
         Achievement firstBuffEver = new Achievement();
         firstBuffEver.Id = "0";
-        firstBuffEver.Description = "You just got a buff!";
+        firstBuffEver.Description = "Push the gate!";
         firstBuffEver.icon = icons[0];
         
         RegisterAchievement(firstBuffEver);
