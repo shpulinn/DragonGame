@@ -1,7 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using InsaneOne.TailEffect;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
@@ -38,7 +35,8 @@ public class Dragon : MonoBehaviour
 
     private bool _isGameOver = false;
 
-    private TailFx _tailFx;
+    //private TailFx _tailFx;
+    private TailEffect _tailEffect;
 
     private bool _isCrushBuffed = false;
 
@@ -49,17 +47,17 @@ public class Dragon : MonoBehaviour
 
     public void SetSpaceBetween(float value)
     {
-        _tailFx.spaceBetween = value;
+        _tailEffect.SpaceBetween = value;
     }
 
     public float GetSpaceBetween()
     {
-        return _tailFx.spaceBetween;
+        return _tailEffect.SpaceBetween;
     }
 
     void Start()
     {
-        _tailFx = GetComponent<TailFx>();
+        _tailEffect = GetComponent<TailEffect>();
 
         _normalScale = transform.GetChild(0).localScale;
         _normalSpaceBetween = GetSpaceBetween();
@@ -173,7 +171,7 @@ public class Dragon : MonoBehaviour
     {
         _isCrushBuffed = true;
         //transform.GetChild(0).localScale = newScale;
-        _tailFx.ApplyScale(newScale);
+        _tailEffect.ApplyScale(newScale);
         SetSpaceBetween(newSpaceBetween);
         Invoke(nameof(RemoveBuff), duration);
         _uiManager.StartTimer(duration);
@@ -183,7 +181,7 @@ public class Dragon : MonoBehaviour
     {
         _isCrushBuffed = false;
         //transform.GetChild(0).localScale = _normalScale;
-        _tailFx.ApplyScale(_normalScale);
+        _tailEffect.ApplyScale(_normalScale);
         SetSpaceBetween(_normalSpaceBetween);
     }
 }
