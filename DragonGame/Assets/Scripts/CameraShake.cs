@@ -1,23 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CameraShake : MonoBehaviour
 {
     // Transform of the camera to shake. Grabs the gameObject's transform
     // if null.
-    public Transform camTransform;
+    [SerializeField] private Transform camTransform;
 	
     // How long the object should shake for.
-    public float shakeDuration = 0f;
+    [SerializeField] private float shakeDuration = 0f;
 	
     // Amplitude of the shake. A larger value shakes the camera harder.
-    public float shakeAmount = 0.7f;
-    public float decreaseFactor = 1.0f;
+    [SerializeField] private float shakeAmount = 0.7f;
+    [SerializeField] private float decreaseFactor = 1.0f;
 	
-    Vector3 originalPos;
+    Vector3 _originalPos;
 
-    private Dragon _dragon;
+    [SerializeField] private DragonCollision _dragonCollision;
 	
     void Awake()
     {
@@ -26,32 +28,40 @@ public class CameraShake : MonoBehaviour
             camTransform = GetComponent(typeof(Transform)) as Transform;
         }
 
-        _dragon = FindObjectOfType<Dragon>();
-        _dragon.OnObjectDestroyedEvent += Shake;
+        if (_dragonCollision == null)
+        {
+            Debug.LogWarning("There is no dragon collision attached to " + name);
+        }
+        _dragonCollision.OnObjectDestroyedEvent += Shake;
     }
 	
     void OnEnable()
     {
-        originalPos = camTransform.localPosition;
+        _originalPos = camTransform.localPosition;
     }
 
     void Update()
     {
         if (shakeDuration > 0)
         {
-            camTransform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+            camTransform.localPosition = _originalPos + Random.insideUnitSphere * shakeAmount;
 			
             shakeDuration -= Time.deltaTime * decreaseFactor;
         }
         else
         {
             shakeDuration = 0f;
-            camTransform.localPosition = originalPos;
+            camTransform.localPosition = _originalPos;
         }
     }
 
     private void Shake()
     {
         shakeDuration = .3f;
+    }
+
+    private void OnDisable()
+    {
+        _dragonCollision.OnObjectDestroyedEvent -= Shake;
     }
 }

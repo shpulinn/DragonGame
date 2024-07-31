@@ -9,16 +9,16 @@ public class LevelBuff : MonoBehaviour
     [SerializeField] private float newSpaceBetweenPartsAmount;
     [SerializeField] private float buffDuration;
 
-    private Dragon _dragon;
+    private DragonBuffs _dragonBuffs;
 
     private void Start()
     {
-        _dragon = FindObjectOfType<Dragon>();
+        _dragonBuffs = FindObjectOfType<DragonBuffs>();
     }
 
     public void ApplyBuff()
     {
-        _dragon.ApplyScaleBuff(newScaleAmount, newSpaceBetweenPartsAmount, buffDuration);
+        _dragonBuffs.ApplyScaleBuff(newScaleAmount, newSpaceBetweenPartsAmount, buffDuration);
 
         if (AchievementManager.Instance.IsAchievementUnlocked("0"))
         {
@@ -32,6 +32,6 @@ public class LevelBuff : MonoBehaviour
 
     public void RemoveBuff()
     {
-        _dragon.RemoveBuff();
+        _dragonBuffs.RemoveBuff();
     }
 }
