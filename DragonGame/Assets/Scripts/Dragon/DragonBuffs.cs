@@ -16,13 +16,13 @@ public class DragonBuffs : MonoBehaviour
         _uiManager = FindObjectOfType<UIManager>();
         _dragonCollision = GetComponent<DragonCollision>();
         _normalScale = transform.GetChild(0).localScale;
-        _normalSpaceBetween = _dragonTail.GetSpaceBetween();
     }
 
     public void ApplyScaleBuff(Vector3 newScale, float newSpaceBetween, float duration)
     {
         _dragonCollision.SetCrushBuff(true);
         _tailEffect.ApplyScale(newScale);
+        _normalSpaceBetween = _dragonTail.GetSpaceBetween();
         _dragonTail.SetSpaceBetween(newSpaceBetween);
         Invoke(nameof(RemoveBuff), duration);
         _uiManager.StartTimer(duration);

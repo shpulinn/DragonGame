@@ -54,9 +54,7 @@ public class MainMenu : MonoBehaviour
 
     private void PlayButton()
     {
-        // logic
-        if (maxLevelNumber < 1)
-            maxLevelNumber = 1;
-        SceneManager.LoadScene(maxLevelNumber);
+        // for now, infinite level is last of the list
+        SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
     }
 }
