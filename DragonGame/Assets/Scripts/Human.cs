@@ -19,9 +19,14 @@ public class Human : MonoBehaviour, ICollidable
     {
         if (_isDead) return;
         _isDead = true;
-        GameManager.Instance.CatchHuman();
+        GlobalEventManager.SendHumanCollected();
         AudioSource.PlayClipAtPoint(collectSound, transform.position);
         _animator.SetBool(Dead, true);
-        Destroy(gameObject, 1.01f);
+        Invoke(nameof(DisableAfterDelay), 1f);
+    }
+
+    private void DisableAfterDelay()
+    {
+        gameObject.SetActive(false);
     }
 }
