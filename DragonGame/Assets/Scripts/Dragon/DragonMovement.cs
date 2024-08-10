@@ -12,7 +12,8 @@ public class DragonMovement : MonoBehaviour
     {
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
-        _navMeshAgent.isStopped = true;
+        // stopping dragon's movement after small delay for nav esh could be built
+        Invoke(nameof(StopMoveAfterDelay), .05f);
     }
 
     public void Move(Vector3 moveVector, bool isControlled)
@@ -27,11 +28,19 @@ public class DragonMovement : MonoBehaviour
         }
         else
         {
-            if (_navMeshAgent.isStopped || this.enabled == false)
+            if (enabled)
             {
-                return;
+                if (_navMeshAgent.isStopped)
+                {
+                    return;
+                }
+                _navMeshAgent.Move(transform.forward * (slowMoveSpeed * Time.deltaTime));
             }
-            _navMeshAgent.Move(transform.forward * (slowMoveSpeed * Time.deltaTime));
         }
+    }
+
+    private void StopMoveAfterDelay()
+    {
+        _navMeshAgent.isStopped = true;
     }
 }
