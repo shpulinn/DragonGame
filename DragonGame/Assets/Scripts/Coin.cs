@@ -3,11 +3,11 @@ using UnityEngine;
 public class Coin : MonoBehaviour, ICollidable
 {
     [SerializeField] private AudioClip collectSound;
-    
+
     public void OnPlayerCollision()
     {
-        GameManager.Instance.AddCoin();
+        GlobalEventManager.SendCoinCollected(1);
         AudioSource.PlayClipAtPoint(collectSound, transform.position);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
