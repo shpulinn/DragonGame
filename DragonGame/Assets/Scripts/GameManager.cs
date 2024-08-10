@@ -22,15 +22,11 @@ public class GameManager : MonoBehaviour
 
     #endregion
     
-    [Header("HUMANS")] [SerializeField] private GameObject humansParentObject;
+    [Header("HUMANS")]
     [SerializeField] private int maxHumanCatchAmount = 20;
-    [SerializeField] private TextMeshProUGUI catchCountText;
-
-    [Header("Coins")] [SerializeField] private TextMeshProUGUI coinsCountText;
-    [SerializeField] private GameObject coinsParentObject;
-
-    [Space] [SerializeField] private GameObject firstStageDoor;
-    [SerializeField] private GameObject secondStageDoor;
+    [Space]
+    //[Space] [SerializeField] private GameObject firstStageDoor;
+    //[SerializeField] private GameObject secondStageDoor;
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject gameWinScreen;
     [SerializeField] private Button nextLevelButton;
@@ -52,6 +48,9 @@ public class GameManager : MonoBehaviour
     private Transform _cameraTransform;
 
     private LevelManager _levelManager;
+
+    public int CurrentHumanCatched => _currentHumanCatched;
+    public int MaxHumanCatchAmount => maxHumanCatchAmount;
 
     public void TogglePause()
     {
@@ -75,9 +74,8 @@ public class GameManager : MonoBehaviour
     {
         if (Camera.main != null) _cameraTransform = Camera.main.transform;
         _isPaused = false;
-        //    maxHumanCatchAmount = humansParentObject.transform.childCount;
-        catchCountText.text = $"0/{maxHumanCatchAmount}";
-        coinsCountText.text = "0";
+        
+        GlobalEventManager.OnHumanCollected.AddListener(CatchHuman);
 
         nextLevelButton.onClick.AddListener(LoadNextLevel);
         
@@ -90,7 +88,7 @@ public class GameManager : MonoBehaviour
             levelProgress.Levels[levelNumber] = new LevelProgress 
             { 
                 CoinsCollected = 0,
-                CoinsOnLevel = coinsParentObject.transform.childCount,
+                
                 WasCompletedBefore = false,
                 IsCompletedNow = false
                 // coinsCollected = 0, 
@@ -105,26 +103,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void AddCoin()
-    {
-        _currentCoins++;
-        coinsCountText.text = _currentCoins.ToString();
-        
-        if (levelProgress.Levels.ContainsKey(levelNumber))
-        {
-            levelProgress.Levels[levelNumber].CoinsCollected++;
-        }
-        else
-        {
-            levelProgress.Levels[levelNumber] = new LevelProgress { CoinsCollected = 1 };
-        }
-        //saveSystem.SaveGame(levelProgress);
-    } 
-
-    public void CatchHuman()
+    private void CatchHuman()
     {
         _currentHumanCatched++;
-        catchCountText.text = $"{_currentHumanCatched}/{maxHumanCatchAmount}";
         if (_currentHumanCatched >= maxHumanCatchAmount)
         {
             Debug.Log("GAME OVER => HUMANS");
