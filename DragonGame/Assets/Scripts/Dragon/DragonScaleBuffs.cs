@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class DragonBuffs : MonoBehaviour
+public class DragonScaleBuffs : MonoBehaviour
 {
     private Vector3 _normalScale;
     private float _normalSpaceBetween;
