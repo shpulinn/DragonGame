@@ -62,11 +62,25 @@ public class InfinityLevelManager : MonoBehaviour
     private void AddCoins(int amount)
     {
         progressSlider.value -= amount;
+        if (progressSlider.value == 0)
+        {
+            HandleProgress(0);
+        }
     }
 
     private void AddHuman()
     {
         progressSlider.value += 1;
+        if ((int)progressSlider.value == (int)progressSlider.maxValue)
+        {
+            HandleProgress((int)progressSlider.maxValue);
+        }
+    }
+
+    public void HandleProgress(int amount)
+    {
+        GlobalEventManager.SendProgressReached(amount);
+        progressSlider.value = progressSlider.maxValue / 2;
     }
     
     /*
