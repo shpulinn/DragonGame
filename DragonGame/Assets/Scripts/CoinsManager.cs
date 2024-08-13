@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ScriptableObjects;
+using UnityEngine;
 
 public class CoinsManager : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class CoinsManager : MonoBehaviour
     private SaveSystem _saveSystem;
     private GameProgress _levelProgress;
 
+    [SerializeField] private DragonBuffs dragonBuff;
+
     public int CurrentCoins => _currentCoins;
 
     private void OnEnable()
@@ -21,6 +24,7 @@ public class CoinsManager : MonoBehaviour
         _currentCoins = _levelProgress.Coins;
         
         GlobalEventManager.OnCoinCollected.AddListener(AddCoins);
+        GlobalEventManager.OnProgressReached.AddListener(ActivateCoinsMultiplier);
     }
     
     private void Awake()
@@ -39,8 +43,26 @@ public class CoinsManager : MonoBehaviour
         {
             return;
         }
+
+        if (BuffManager.Instance.IsAnyBuffActive)
+        {
+            if (BuffManager.Instance.IsBuffActive(dragonBuff.buffName))
+            {
+                amount *= BuffManager.Instance.GetCoinMultiplier();
+            }
+        }
         _currentCoins += amount;
         _levelProgress.Coins = _currentCoins;
+    }
+
+    public void ActivateCoinsMultiplier(int amount)
+    {
+        if (amount > 0)
+            return;
+        // cant activate new buff, while some buff is active
+        if (BuffManager.Instance.IsAnyBuffActive)
+            return;
+        BuffManager.Instance.ActivateBuff(dragonBuff);
     }
 
     public bool TrySpendCoins(int amount)
