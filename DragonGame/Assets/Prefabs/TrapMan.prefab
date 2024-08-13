@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6656368687845255156}
   - component: {fileID: 5494121595608868755}
   - component: {fileID: 1986450584093154375}
+  - component: {fileID: 6653157604032079926}
   m_Layer: 0
   m_Name: TrapMan
   m_TagString: Untagged
@@ -189,6 +190,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6653157604032079926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944033422477149142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &5493385601255038107
 PrefabInstance:
   m_ObjectHideFlags: 0
