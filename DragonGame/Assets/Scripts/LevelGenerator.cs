@@ -23,8 +23,8 @@ public class LevelGenerator : MonoBehaviour
         InitializeObjectPools();
         SpawnInitialChunks();
         ChunkTrigger.OnChunkTriggered += OnChunkTriggered;
-
-        UpdateNavMesh();
+        
+        Invoke(nameof(UpdateNavMesh), .025f);
     }
 
     private void InitializeObjectPools()
@@ -54,7 +54,6 @@ public class LevelGenerator : MonoBehaviour
 
     private void SpawnWallChunk()
     {
-        
         if (wallChunk != null)
         {
             ReturnChunkToPool(wallChunk);
@@ -63,7 +62,6 @@ public class LevelGenerator : MonoBehaviour
         wallChunk = Instantiate(wallChunkPrefab);
         Vector3 spawnPosition = activeChunks[0].transform.position - Vector3.forward * chunkLength;
         wallChunk.transform.position = spawnPosition;
-        //activeChunks.Insert(0, wallChunk);
     }
 
     private void SpawnNewChunk()
