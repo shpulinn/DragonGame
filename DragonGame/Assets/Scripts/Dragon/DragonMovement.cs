@@ -18,6 +18,8 @@ public class DragonMovement : MonoBehaviour
 
     public void Move(Vector3 moveVector, bool isControlled)
     {
+        if (!_navMeshAgent.isOnNavMesh)
+            return;
         if (isControlled)
         {
             _navMeshAgent.isStopped = false;

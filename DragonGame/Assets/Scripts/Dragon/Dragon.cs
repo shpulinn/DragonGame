@@ -5,7 +5,7 @@ public class Dragon : MonoBehaviour
     private DragonMovement _movement;
     private DragonTail _tail;
     private DragonCollision _collision;
-    private DragonBuffs _buffs;
+    private DragonScaleBuffs _scaleBuffs;
     private bool _isGameOver = false;
 
     private void Start()
@@ -13,7 +13,7 @@ public class Dragon : MonoBehaviour
         _movement = GetComponent<DragonMovement>();
         _tail = GetComponent<DragonTail>();
         _collision = GetComponent<DragonCollision>();
-        _buffs = GetComponent<DragonBuffs>();
+        _scaleBuffs = GetComponent<DragonScaleBuffs>();
 
         GameManager.Instance.OnGameOverEvent += OnGameOver;
     }
