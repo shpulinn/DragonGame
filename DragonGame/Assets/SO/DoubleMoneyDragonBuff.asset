@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7eab97be04b4884b1707aae6a6d5c27, type: 3}
+  m_Name: DoubleMoneyDragonBuff
+  m_EditorClassIdentifier: 
+  buffName: Double Money
+  buffIcon: {fileID: 21300000, guid: 430e73d53a20b124a8bd3acfcc938e6e, type: 3}
+  buffDuration: 10
+  enableCoinsMultiplier: 1
+  coinsMultiplier: 2
+  enableDiamonds: 0
+  enableMoveThroughPeople: 0
+  enableMoveThroughObstacles: 0
+  enableBreakingObstacles: 0
+  enableSpawningSpecialChunk: 0
