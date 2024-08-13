@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip winSound;
     [SerializeField] private AudioClip loseSound;
 
+    [Space] [Header("Buffs")] 
+    [SerializeField] private DragonScaleBuffs doubleMoney;
+
+    public bool _isAtiveBuff;
+    
     private int _currentCoins;
 
     private int _currentHumanCatched = 0;
