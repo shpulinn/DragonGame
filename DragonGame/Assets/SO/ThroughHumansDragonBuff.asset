@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7eab97be04b4884b1707aae6a6d5c27, type: 3}
-  m_Name: DoubleMoneyDragonBuff
+  m_Name: ThroughHumansDragonBuff
   m_EditorClassIdentifier: 
-  buffName: DoubleMoney
-  buffIcon: {fileID: 21300000, guid: 0cab8552829fcb048ba5a900d7419719, type: 3}
+  buffName: ThroughHumans
+  buffIcon: {fileID: 21300000, guid: 3218a0136e941d74c81a071c30401592, type: 3}
   buffDuration: 10
-  enableCoinsMultiplier: 1
-  coinsMultiplier: 2
+  enableCoinsMultiplier: 0
+  coinsMultiplier: 1
   enableDiamonds: 0
-  enableMoveThroughPeople: 0
+  enableMoveThroughPeople: 1
   enableMoveThroughObstacles: 0
   enableBreakingObstacles: 0
   enableSpawningSpecialChunk: 0
