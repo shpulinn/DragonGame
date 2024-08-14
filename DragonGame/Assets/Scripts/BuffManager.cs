@@ -12,9 +12,9 @@ public class BuffManager : MonoBehaviour
     //private Dictionary<string, DragonBuffs> activeBuffs = new Dictionary<string, DragonBuffs>();
     private DragonBuffs activeBuff;
 
-    private bool _isAnBuffActive = false;
+    private bool _isAnyBuffActive = false;
 
-    public bool IsAnyBuffActive => _isAnBuffActive;
+    public bool IsAnyBuffActive => _isAnyBuffActive;
 
     private void Awake()
     {
@@ -39,14 +39,14 @@ public class BuffManager : MonoBehaviour
         //     Debug.Log("Buff: " + buff.buffName + " activated");
         //     _isAnBuffActive = true;
         // }
-        if (_isAnBuffActive)
+        if (_isAnyBuffActive)
         {
             return;
         }
         activeBuff = buff;
         GlobalEventManager.SendBuffEnabled(buff);
         StartCoroutine(DeactivateBuffAfterDuration(buff));
-        _isAnBuffActive = true;
+        _isAnyBuffActive = true;
         
     }
 
@@ -62,7 +62,7 @@ public class BuffManager : MonoBehaviour
         {
             // Вы можете добавить событие для деактивации баффа в GlobalEventManager, если это необходимо
             // GlobalEventManager.SendBuffDisabled(buff.buffName);
-            _isAnBuffActive = false;
+            _isAnyBuffActive = false;
             activeBuff = null;
         }
     }
@@ -70,6 +70,16 @@ public class BuffManager : MonoBehaviour
     public bool IsBuffActive(string buffName)
     {
         return activeBuff.buffName.Equals(buffName);
+    }
+
+    public DragonBuffs GetActiveBuff()
+    {
+        if (_isAnyBuffActive)
+        {
+            return activeBuff;
+        }
+
+        return null;
     }
 
     public int GetCoinMultiplier()

@@ -17,7 +17,7 @@ namespace ScriptableObjects
         public bool enableMoveThroughPeople;
 
         [Space] [Header("Obstacles")] 
-        public bool enableMoveThroughObstacles;
+        public bool enableMoveThroughTraps;
         public bool enableBreakingObstacles;
 
         [Space] [Header("Other")] 

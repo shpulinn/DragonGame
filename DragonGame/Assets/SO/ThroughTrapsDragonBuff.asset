@@ -19,6 +19,6 @@ MonoBehaviour:
   coinsMultiplier: 1
   enableDiamonds: 0
   enableMoveThroughPeople: 0
-  enableMoveThroughObstacles: 1
+  enableMoveThroughTraps: 1
   enableBreakingObstacles: 0
   enableSpawningSpecialChunk: 0

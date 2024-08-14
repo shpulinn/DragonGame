@@ -5,7 +5,7 @@ using UnityEngine;
 public class BuffUI : MonoBehaviour
 {
     [SerializeField] private GameObject buffUIHolder;
-    [SerializeField] private UIManager _uiManager;
+    [SerializeField] private UIManager uiManager;
 
     [Space] [SerializeField] private GameObject doubleMoneyIcon;
     [SerializeField] private GameObject diamondsIcon;
@@ -15,13 +15,13 @@ public class BuffUI : MonoBehaviour
     [SerializeField] private GameObject destroyIcon;
 
 
-    private Dictionary<string, GameObject> buffsIconsDict;
+    private Dictionary<string, GameObject> _buffsIconsDict;
 
     private void OnEnable()
     {
         GlobalEventManager.OnBuffEnabled.AddListener(ShowBuffUI);
 
-        buffsIconsDict = new Dictionary<string, GameObject>
+        _buffsIconsDict = new Dictionary<string, GameObject>
         {
             { "DoubleMoney", doubleMoneyIcon },
             { "Diamonds", diamondsIcon },
@@ -36,13 +36,13 @@ public class BuffUI : MonoBehaviour
 
     private void ShowBuffUI(DragonBuffs buff)
     {
-        if (!buffsIconsDict.ContainsKey(buff.buffName))
+        if (!_buffsIconsDict.ContainsKey(buff.buffName))
             return;
-        buffsIconsDict[buff.buffName].gameObject.SetActive(true);
+        _buffsIconsDict[buff.buffName].gameObject.SetActive(true);
         
         buffUIHolder.SetActive(true);
         Invoke(nameof(HideBuffUI), buff.buffDuration);
-        _uiManager.StartTimer(buff.buffDuration);
+        uiManager.StartTimer(buff.buffDuration);
     }
 
     private void HideBuffUI()
@@ -53,7 +53,7 @@ public class BuffUI : MonoBehaviour
 
     private void HideAllIcons()
     {
-        foreach (KeyValuePair<string,GameObject> o in buffsIconsDict)
+        foreach (KeyValuePair<string,GameObject> o in _buffsIconsDict)
         {
             o.Value.SetActive(false);
         }

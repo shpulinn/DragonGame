@@ -526,6 +526,23 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3073939753993939801, guid: 15bfffb06c5f6854c8f71babe074459c,
+        type: 3}
+      propertyPath: dragonBuffs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3073939753993939801, guid: 15bfffb06c5f6854c8f71babe074459c,
+        type: 3}
+      propertyPath: dragonBuffs.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: b8ccc3128c98db843a13ef8044a03d43,
+        type: 2}
+    - target: {fileID: 3073939753993939801, guid: 15bfffb06c5f6854c8f71babe074459c,
+        type: 3}
+      propertyPath: dragonBuffs.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2cc08406e3088484ab13e65b2e82a0a5,
+        type: 2}
     - target: {fileID: 5879078355421165728, guid: 15bfffb06c5f6854c8f71babe074459c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1182,7 +1199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buffUIHolder: {fileID: 1566401497}
-  _uiManager: {fileID: 917886932}
+  uiManager: {fileID: 917886932}
   doubleMoneyIcon: {fileID: 1521625740}
   diamondsIcon: {fileID: 584055217}
   specialIcon: {fileID: 1809191799}
