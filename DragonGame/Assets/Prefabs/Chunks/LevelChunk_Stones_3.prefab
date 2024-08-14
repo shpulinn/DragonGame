@@ -4890,6 +4890,8 @@ MonoBehaviour:
   diamondSpawnPoint: {fileID: 8621214387265376796}
   coinPrefab: {fileID: 3127209825607500014, guid: 38104ef396b992048ad6a9b76b3a0512,
     type: 3}
+  diamondPrefab: {fileID: 3127209825607500014, guid: 9f4549c48a78d4f4f95394e67604b3ad,
+    type: 3}
   humanPrefab: {fileID: 9163068307067180935, guid: df7410598ae071b439b6ad4747c040b6,
     type: 3}
   trapPrefabs:
