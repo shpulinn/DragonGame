@@ -44,9 +44,8 @@ public class BuffManager : MonoBehaviour
             return;
         }
         activeBuff = buff;
-        GlobalEventManager.SendBuffEnabled(buff.buffName, buff.buffDuration);
+        GlobalEventManager.SendBuffEnabled(buff);
         StartCoroutine(DeactivateBuffAfterDuration(buff));
-        Debug.Log("Buff: " + buff.buffName + " activated");
         _isAnBuffActive = true;
         
     }
@@ -55,8 +54,6 @@ public class BuffManager : MonoBehaviour
     {
         yield return new WaitForSeconds(buff.buffDuration);
         DeactivateBuff(buff);
-        Debug.Log("Buff: " + buff.buffName + " DEactivated");
-
     }
 
     private void DeactivateBuff(DragonBuffs buff)

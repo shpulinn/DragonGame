@@ -10,6 +10,7 @@ public class LevelChunk : MonoBehaviour
     [SerializeField] private Transform diamondSpawnPoint;
 
     [SerializeField] private GameObject coinPrefab;
+    [SerializeField] private GameObject diamondPrefab;
     [SerializeField] private GameObject humanPrefab;
     [SerializeField] private List<GameObject> trapPrefabs;
 
@@ -50,6 +51,11 @@ public class LevelChunk : MonoBehaviour
                 GameObject randomTrapPrefab = trapPrefabs[UnityEngine.Random.Range(0, trapPrefabs.Count)];
                 SpawnObject(randomTrapPrefab, spawnPoints[i], traps);
             }
+        }
+
+        if (CoinsManager.Instance.IsDiamondsActive && diamondPrefab)
+        {
+            SpawnObject(diamondPrefab, diamondSpawnPoint);
         }
     }
     

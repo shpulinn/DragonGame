@@ -8,13 +8,17 @@ public class CoinsManager : MonoBehaviour
     public Event OnCoinAdd;
     
     private int _currentCoins;
+
+    private bool _isDiamondsActive = false;
     
     private SaveSystem _saveSystem;
     private GameProgress _levelProgress;
 
-    [SerializeField] private DragonBuffs dragonBuff;
+    [SerializeField] private DragonBuffs dragonBuffDoubleCoins;
+    [SerializeField] private DragonBuffs dragonBuffDiamonds;
 
     public int CurrentCoins => _currentCoins;
+    public bool IsDiamondsActive => _isDiamondsActive;
 
     private void OnEnable()
     {
@@ -46,7 +50,7 @@ public class CoinsManager : MonoBehaviour
 
         if (BuffManager.Instance.IsAnyBuffActive)
         {
-            if (BuffManager.Instance.IsBuffActive(dragonBuff.buffName))
+            if (BuffManager.Instance.IsBuffActive(dragonBuffDoubleCoins.buffName))
             {
                 amount *= BuffManager.Instance.GetCoinMultiplier();
             }
@@ -62,7 +66,27 @@ public class CoinsManager : MonoBehaviour
         // cant activate new buff, while some buff is active
         if (BuffManager.Instance.IsAnyBuffActive)
             return;
-        BuffManager.Instance.ActivateBuff(dragonBuff);
+        int randomID = Random.Range(0, 2);
+        switch (randomID)
+        {
+            case 0:
+                BuffManager.Instance.ActivateBuff(dragonBuffDoubleCoins);
+                break;
+            case 1:
+                BuffManager.Instance.ActivateBuff(dragonBuffDiamonds);
+                ActivateDiamonds();
+                break;
+        } }
+
+    private void ActivateDiamonds()
+    {
+        _isDiamondsActive = true;
+        Invoke(nameof(DisableDiamonds), dragonBuffDiamonds.buffDuration);
+    }
+
+    private void DisableDiamonds()
+    {
+        _isDiamondsActive = false;
     }
 
     public bool TrySpendCoins(int amount)

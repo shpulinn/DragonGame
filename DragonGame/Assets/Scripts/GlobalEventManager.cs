@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using ScriptableObjects;
 using UnityEngine.Events;
 
 public class GlobalEventManager
@@ -6,7 +6,8 @@ public class GlobalEventManager
     public static UnityEvent<int> OnCoinCollected = new UnityEvent<int>();
     public static UnityEvent OnHumanCollected = new UnityEvent();
     public static UnityEvent<int> OnProgressReached = new UnityEvent<int>();
-    public static UnityEvent<string, float> OnBuffEnabled = new UnityEvent<string, float>();
+    public static UnityEvent<DragonBuffs> OnBuffEnabled = new UnityEvent<DragonBuffs>();    
+
 
     public static void SendCoinCollected(int amount = 0)
     {
@@ -23,8 +24,8 @@ public class GlobalEventManager
         OnProgressReached.Invoke(amount);
     }
 
-    public static void SendBuffEnabled(string name, float duration)
+    public static void SendBuffEnabled(DragonBuffs buff)
     {
-        OnBuffEnabled.Invoke(name, duration);
+        OnBuffEnabled.Invoke(buff);
     }
 }
