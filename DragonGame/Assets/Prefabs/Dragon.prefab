@@ -424,6 +424,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 375c7befec854cf595dc70c414b2596c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragonBuffs:
+  - {fileID: 11400000, guid: 2cc08406e3088484ab13e65b2e82a0a5, type: 2}
+  throughHumansBuff: {fileID: 11400000, guid: b8ccc3128c98db843a13ef8044a03d43, type: 2}
 --- !u!114 &5671144765662983325
 MonoBehaviour:
   m_ObjectHideFlags: 0
