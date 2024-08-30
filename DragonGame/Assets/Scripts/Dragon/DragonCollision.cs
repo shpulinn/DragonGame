@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class DragonCollision : MonoBehaviour
 {
     [SerializeField] private List<DragonBuffs> dragonBuffs = new List<DragonBuffs>();
-    
+
     public delegate void OnObjectDestroyed();
     public OnObjectDestroyed OnObjectDestroyedEvent;
 
@@ -23,14 +23,15 @@ public class DragonCollision : MonoBehaviour
 
     private void DisableCollision(int value)
     {
-        if (value > 1 && BuffManager.Instance.IsAnyBuffActive == false)
-        {
-            _collisionDisabled = true;
-            var randomBuff = Random.Range(0, dragonBuffs.Count);
-            _currentBuff = dragonBuffs[randomBuff];
-            Invoke(nameof(EnableCollision), _currentBuff.buffDuration);
-            BuffManager.Instance.ActivateBuff(_currentBuff);
-        }
+        if (BuffManager.Instance.IsAnyBuffActive)
+            return;
+        if (value <= 1) 
+            return;
+        var randomBuff = Random.Range(0, dragonBuffs.Count);
+        _currentBuff = dragonBuffs[randomBuff];
+        _collisionDisabled = true;
+        Invoke(nameof(EnableCollision), _currentBuff.buffDuration);
+        BuffManager.Instance.ActivateBuff(_currentBuff);
     }
 
     private void EnableCollision()
@@ -43,15 +44,16 @@ public class DragonCollision : MonoBehaviour
     {
         if (other.TryGetComponent(out ICollidable collidable))
         {
+            var currentBuff = BuffManager.Instance.GetActiveBuff();
             if (other.TryGetComponent(out Human human))
             {
-                if (_currentBuff && _currentBuff.enableMoveThroughPeople)
+                if (currentBuff && currentBuff.enableMoveThroughPeople)
                 {
                     return;
                 }
             } else if (other.TryGetComponent(out Trap trap))
             {
-                if (_currentBuff && _currentBuff.enableMoveThroughTraps)
+                if (currentBuff && currentBuff.enableMoveThroughTraps)
                 {
                     return;
                 }

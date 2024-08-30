@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Dragon : MonoBehaviour
 {
-    private DragonMovement _movement;
+    //private DragonMovement _movement;
+    private DragonMovementRB _movementRB;
     private DragonTail _tail;
     private DragonCollision _collision;
     private DragonScaleBuffs _scaleBuffs;
@@ -10,7 +11,8 @@ public class Dragon : MonoBehaviour
 
     private void Start()
     {
-        _movement = GetComponent<DragonMovement>();
+        //_movement = GetComponent<DragonMovement>();
+        _movementRB = GetComponent<DragonMovementRB>();
         _tail = GetComponent<DragonTail>();
         _collision = GetComponent<DragonCollision>();
         _scaleBuffs = GetComponent<DragonScaleBuffs>();
@@ -24,7 +26,7 @@ public class Dragon : MonoBehaviour
 
         bool isControlled = InputManager.Instance.Joystick;
         Vector3 moveVector = isControlled ? InputManager.Instance.MoveVector : Vector3.zero;
-        _movement.Move(moveVector, isControlled);
+        _movementRB.Move(moveVector, isControlled);
     }
 
     private void OnGameOver()

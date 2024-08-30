@@ -16,6 +16,7 @@ public class CoinsManager : MonoBehaviour
 
     [SerializeField] private DragonBuffs dragonBuffDoubleCoins;
     [SerializeField] private DragonBuffs dragonBuffDiamonds;
+    [SerializeField] private DragonBuffs dragonBuffThroughHumans;
 
     public int CurrentCoins => _currentCoins;
     public bool IsDiamondsActive => _isDiamondsActive;
@@ -66,7 +67,7 @@ public class CoinsManager : MonoBehaviour
         // cant activate new buff, while some buff is active
         if (BuffManager.Instance.IsAnyBuffActive)
             return;
-        int randomID = Random.Range(0, 2);
+        int randomID = Random.Range(0, 3);
         switch (randomID)
         {
             case 0:
@@ -75,6 +76,9 @@ public class CoinsManager : MonoBehaviour
             case 1:
                 BuffManager.Instance.ActivateBuff(dragonBuffDiamonds);
                 ActivateDiamonds();
+                break;
+            case 2:
+                BuffManager.Instance.ActivateBuff(dragonBuffThroughHumans);
                 break;
         } }
 

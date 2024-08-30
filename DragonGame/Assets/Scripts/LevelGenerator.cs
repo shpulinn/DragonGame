@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
@@ -6,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class LevelGenerator : MonoBehaviour
 {
-    [SerializeField] private NavMeshSurface navMeshSurface;
+    //[SerializeField] private NavMeshSurface navMeshSurface;
     [SerializeField] private GameObject[] chunkPrefabs;
     [SerializeField] private GameObject wallChunkPrefab;
     [SerializeField] private float chunkLength = 50f;
@@ -17,6 +18,9 @@ public class LevelGenerator : MonoBehaviour
     private List<GameObject> activeChunks = new List<GameObject>();
     private Queue<GameObject>[] chunkPools;
     private GameObject wallChunk;
+    
+    //private float navMeshUpdateInterval = 3f; // Обновлять каждую секунду
+    //private float lastNavMeshUpdateTime = 0f;
 
     private void Start()
     {
@@ -24,7 +28,12 @@ public class LevelGenerator : MonoBehaviour
         SpawnInitialChunks();
         ChunkTrigger.OnChunkTriggered += OnChunkTriggered;
         
-        Invoke(nameof(UpdateNavMesh), .025f);
+        //Invoke(nameof(BuildMavMesh), .025f);
+    }
+
+    private void BuildMavMesh()
+    {
+        //navMeshSurface.BuildNavMesh();
     }
 
     private void InitializeObjectPools()
@@ -36,7 +45,8 @@ public class LevelGenerator : MonoBehaviour
             chunkPools[i] = new Queue<GameObject>();
             for (int j = 0; j < poolSize; j++)
             {
-                GameObject chunk = Instantiate(chunkPrefabs[i]);
+                int randomChunkIndex = Random.Range(0, chunkPrefabs.Length);
+                GameObject chunk = Instantiate(chunkPrefabs[randomChunkIndex]);
                 chunk.SetActive(false);
                 chunkPools[i].Enqueue(chunk);
             }
@@ -47,9 +57,12 @@ public class LevelGenerator : MonoBehaviour
     {
         for (int i = 0; i < initialChunksCount; i++)
         {
-            SpawnNewChunk();
+            //SpawnNewChunk();
+            StartCoroutine(SpawnNewChunkAsync());
         }
+        // spawn wall chunk with small delay
         SpawnWallChunk();
+        //UpdateNavMesh();
     }
 
     private void SpawnWallChunk()
@@ -63,20 +76,22 @@ public class LevelGenerator : MonoBehaviour
         Vector3 spawnPosition = activeChunks[0].transform.position - Vector3.forward * chunkLength;
         wallChunk.transform.position = spawnPosition;
     }
-
-    private void SpawnNewChunk()
+    
+    private IEnumerator SpawnNewChunkAsync()
     {
         int chunkIndex = Random.Range(0, chunkPrefabs.Length);
         GameObject newChunk = GetChunkFromPool(chunkIndex);
-        
+    
         Vector3 spawnPosition = (activeChunks.Count > 0) 
             ? activeChunks[activeChunks.Count - 1].transform.position + Vector3.forward * chunkLength
             : Vector3.zero;
-        
+    
         newChunk.transform.position = spawnPosition;
         newChunk.SetActive(true);
-        
+    
         activeChunks.Add(newChunk);
+
+        yield return null; // Ждем следующего кадра
     }
 
     private GameObject GetChunkFromPool(int chunkIndex)
@@ -99,15 +114,17 @@ public class LevelGenerator : MonoBehaviour
         // Спавним новый чанк только если нужно
         if (activeChunks.Count - triggeredChunkIndex <= maxChunksAhead)
         {
-            SpawnNewChunk();
+            //SpawnNewChunk();
+            StartCoroutine(SpawnNewChunkAsync());
         }
 
+        
         // Удаляем старые чанки и перемещаем стену
         while (triggeredChunkIndex > 0)
         {
             GameObject chunkToRemove = activeChunks[0];
             activeChunks.Remove(chunkToRemove);
-
+            
             if (chunkToRemove != wallChunk)
             {
                 ReturnChunkToPool(chunkToRemove);
@@ -115,13 +132,17 @@ public class LevelGenerator : MonoBehaviour
             
             triggeredChunkIndex--;
         }
+        
 
+        
         // Перемещаем стену на место первого активного чанка
         Vector3 newWallPosition = activeChunks[0].transform.position - Vector3.forward * chunkLength;
         wallChunk.transform.position = newWallPosition;
         activeChunks.Insert(0, wallChunk);
         
-        UpdateNavMesh();
+        
+        
+        //UpdateNavMesh();
     }
 
     private void ReturnChunkToPool(GameObject chunk)
@@ -134,13 +155,34 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
+    /*
     private void UpdateNavMesh()
     {
-        navMeshSurface.BuildNavMesh();
+        //navMeshSurface.BuildNavMesh();
+        //StartCoroutine(UpdateNavMeshAsync());
+        
+        if (Time.time - lastNavMeshUpdateTime >= navMeshUpdateInterval)
+        {
+            StartCoroutine(UpdateNavMeshAsync());
+            lastNavMeshUpdateTime = Time.time;
+        }
     }
+    */
     
+    /*
+    private IEnumerator UpdateNavMeshAsync()
+    {
+        AsyncOperation updateNavMeshOperation = navMeshSurface.UpdateNavMesh(navMeshSurface.navMeshData);
+        while (!updateNavMeshOperation.isDone)
+        {
+            yield return null;
+        }
+    }
+    */
+
     private void OnDisable()
     {
         ChunkTrigger.OnChunkTriggered -= OnChunkTriggered;
+        StopAllCoroutines();
     }
 }
