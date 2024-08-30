@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7348ca816e8345d9bf95ac0d0a1c42ab, type: 3}
   m_Name: StandartChunkSettings
   m_EditorClassIdentifier: 
-  coinChance: 0.7
-  humanChance: 0.5
-  trapChance: 0.4
+  emptyChance: 0.1
+  coinChance: 0.65
+  humanChance: 0.55
+  trapChance: 0.35
