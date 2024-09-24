@@ -1563,6 +1563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBuffOnLevel: 0
+  dragonBuffs: {fileID: 0}
   stageDoor: {fileID: 1231686811}
 --- !u!1001 &184482186
 PrefabInstance:
@@ -4060,6 +4061,10 @@ MonoBehaviour:
   nextLevelButton: {fileID: 1319240048}
   winSound: {fileID: 8300000, guid: 53a69441c500637438928d76f0387f0b, type: 3}
   loseSound: {fileID: 8300000, guid: 71e4a62de6d435344b1506966b3dd211, type: 3}
+  DragonStats: {fileID: 0}
+  immortalityDuration: 3
+  DragonVisual: {fileID: 0}
+  UIManager: {fileID: 0}
 --- !u!1 &380567960
 GameObject:
   m_ObjectHideFlags: 0
@@ -9349,7 +9354,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -16277,6 +16282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db322d6c33244dff991ad94d36690d12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragonBuffDoubleCoins: {fileID: 0}
+  dragonBuffDiamonds: {fileID: 0}
+  dragonBuffThroughHumans: {fileID: 0}
 --- !u!1001 &1305551434
 PrefabInstance:
   m_ObjectHideFlags: 0

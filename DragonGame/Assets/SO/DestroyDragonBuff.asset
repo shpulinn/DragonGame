@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buffName: Destroy
   buffIcon: {fileID: 21300000, guid: 0176ec3b75d3e564e896230c657ec3b8, type: 3}
-  buffDuration: 10
+  buffDuration: 15
   enableCoinsMultiplier: 0
   coinsMultiplier: 1
   enableDiamonds: 0
   enableMoveThroughPeople: 0
-  enableMoveThroughObstacles: 0
+  enableMoveThroughTraps: 0
   enableBreakingObstacles: 1
   enableSpawningSpecialChunk: 0

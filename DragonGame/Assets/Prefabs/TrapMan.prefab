@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AudioClip: {fileID: 8300000, guid: c1a65cda4db134a41ac6478cd8a16e15, type: 3}
+  ExplosionParticles: {fileID: 1879769179923522, guid: d7adb196a0966e646b3dfe58b5560741,
+    type: 3}
 --- !u!65 &6656368687845255156
 BoxCollider:
   m_ObjectHideFlags: 0
