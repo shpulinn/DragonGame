@@ -600,11 +600,11 @@
                 "z": 0.0
             },
             "_spacingType": 0,
-            "_minSpacing": 3.0000007152557375,
+            "_minSpacing": 1.0,
             "_randomizePositions": true,
             "_randomness": 1.0,
             "_paintOnSurfaceToolSettings": {
-                "_paintOnMeshesWithoutCollider": true,
+                "_paintOnMeshesWithoutCollider": false,
                 "_paintOnSelectedOnly": false,
                 "_paintOnPalettePrefabs": false,
                 "_mode": 0,
@@ -926,7 +926,7 @@
                 "z": 0.0
             },
             "_spacingType": 0,
-            "_minSpacing": 3.1056294441223146,
+            "_minSpacing": 1.0,
             "_randomizePositions": true,
             "_randomness": 1.0,
             "_simData": {
