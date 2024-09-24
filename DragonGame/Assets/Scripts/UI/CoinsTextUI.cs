@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 public class CoinsTextUI : MonoBehaviour
@@ -10,11 +11,21 @@ public class CoinsTextUI : MonoBehaviour
         GlobalEventManager.OnCoinCollected.AddListener(UpdateText);
     }
 
+    private void Start()
+    {
+        coinsText.text = CoinsManager.Instance.CurrentCoins.ToString();
+    }
+
     private void UpdateText(int amount)
     {
         if (coinsText)
         {
             coinsText.text = CoinsManager.Instance.CurrentCoins.ToString();
         }
+    }
+
+    private void OnDisable()
+    {
+        GlobalEventManager.OnCoinCollected.RemoveListener(UpdateText);
     }
 }

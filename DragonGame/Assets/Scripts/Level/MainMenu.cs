@@ -54,7 +54,6 @@ public class MainMenu : MonoBehaviour
 
     private void PlayButton()
     {
-        // for now, infinite level is last of the list
-        SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
+        SceneManager.LoadScene("InfiniteLevel");
     }
 }

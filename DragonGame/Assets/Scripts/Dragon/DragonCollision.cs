@@ -8,6 +8,8 @@ public class DragonCollision : MonoBehaviour
 {
     [SerializeField] private List<DragonBuffs> dragonBuffs = new List<DragonBuffs>();
 
+    [Space] [SerializeField] private DragonStats DragonStats;
+
     public delegate void OnObjectDestroyed();
     public OnObjectDestroyed OnObjectDestroyedEvent;
 
@@ -42,9 +44,13 @@ public class DragonCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        var currentBuff = ScriptableObject.CreateInstance<DragonBuffs>();
+        if (BuffManager.Instance.IsAnyBuffActive)
+        {
+            currentBuff = BuffManager.Instance.GetActiveBuff();
+        }
         if (other.TryGetComponent(out ICollidable collidable))
         {
-            var currentBuff = BuffManager.Instance.GetActiveBuff();
             if (other.TryGetComponent(out Human human))
             {
                 if (currentBuff && currentBuff.enableMoveThroughPeople)
@@ -61,22 +67,21 @@ public class DragonCollision : MonoBehaviour
             
             collidable.OnPlayerCollision();
         }
-
-        if (_isCrushBuffed)
+        
+        if (other.TryGetComponent(out IDestroyable IDestroyable))
         {
-            if (other.TryGetComponent(out IDestroyable destroyable))
+            if (other.TryGetComponent(out Destroyable destroyable))
             {
-                destroyable.OnPlayerCollide();
-                OnObjectDestroyedEvent?.Invoke();
+                if (currentBuff.enableBreakingObstacles)
+                {
+                    IDestroyable.OnPlayerCollide();
+                    OnObjectDestroyedEvent?.Invoke();
+                } else if (destroyable.DestructionLevelNeeded > 0 && DragonStats.DestructionLevel >= destroyable.DestructionLevelNeeded)
+                {
+                    IDestroyable.OnPlayerCollide();
+                    OnObjectDestroyedEvent?.Invoke();
+                }   
             }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.CompareTag("Obstacle"))
-        {
-            transform.position = transform.position;
         }
     }
 

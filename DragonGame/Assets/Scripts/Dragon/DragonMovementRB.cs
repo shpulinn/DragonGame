@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class DragonMovementRB : MonoBehaviour
@@ -8,6 +7,8 @@ public class DragonMovementRB : MonoBehaviour
     [SerializeField] private float headRotationSpeed = 5f; // Скорость поворота
     private Rigidbody _rigidbody;
     private bool _hadFirstTouch = false;
+
+    private bool _canMove = true;
 
     private void Start()
     {
@@ -22,6 +23,11 @@ public class DragonMovementRB : MonoBehaviour
 
     public void Move(Vector3 moveVector, bool isControlled)
     {
+        if (_canMove == false)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            return;
+        }
         if (isControlled && _hadFirstTouch == false)
         {
             _hadFirstTouch = true;
@@ -56,6 +62,16 @@ public class DragonMovementRB : MonoBehaviour
     private void StopMoveAfterDelay()
     {
         _rigidbody.velocity = Vector3.zero;
+    }
+
+    public void DisableMovement()
+    {
+        _canMove = false;
+    }
+
+    public void EnableMovement()
+    {
+        _canMove = true;
     }
 
     private void OnDisable()

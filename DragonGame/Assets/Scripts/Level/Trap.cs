@@ -3,6 +3,7 @@ using UnityEngine;
 public class Trap : MonoBehaviour, ICollidable
 {
     [SerializeField] private AudioClip AudioClip;
+    [SerializeField] private GameObject ExplosionParticles;
 
     private AudioSource _audioSource;
 
@@ -18,10 +19,17 @@ public class Trap : MonoBehaviour, ICollidable
     public void OnPlayerCollision()
     {
         if (_gameManager.IsPaused) return;
-        if (AudioClip)
+        if (GameManager.Instance.TryTakeDamage())
         {
-            _audioSource.PlayOneShot(AudioClip);
+            if (AudioClip)
+            {
+                _audioSource.PlayOneShot(AudioClip);
+            }
+
+            if (ExplosionParticles)
+            {
+                Instantiate(ExplosionParticles, transform.position, Quaternion.identity);
+            }
         }
-        GameManager.Instance.GameOver();
     }
 }

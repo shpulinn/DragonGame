@@ -8,8 +8,7 @@ public class Diamond : MonoBehaviour, ICollidable
 
     public void OnPlayerCollision()
     {
-        // for now, diamond is equal 100 coins
-        GlobalEventManager.SendCoinCollected(100);
+        CoinsManager.Instance.AddDiamond();
         if (collectSound)
         {
             AudioSource.PlayClipAtPoint(collectSound, transform.position);

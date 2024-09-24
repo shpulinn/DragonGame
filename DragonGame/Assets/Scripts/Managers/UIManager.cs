@@ -66,6 +66,10 @@ public class UIManager : MonoBehaviour
     private void LoadMenu()
     {
         Unpause();
+        if (CoinsMagnetItem.IsActive)
+        {
+            CoinsMagnetItem.IsActive = false;
+        }
         SceneManager.LoadScene("Menu");
     }
 

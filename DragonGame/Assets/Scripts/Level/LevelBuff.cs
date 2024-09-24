@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelBuff : MonoBehaviour
@@ -19,7 +16,12 @@ public class LevelBuff : MonoBehaviour
     public void ApplyBuff()
     {
         _dragonScaleBuffs.ApplyScaleBuff(newScaleAmount, newSpaceBetweenPartsAmount, buffDuration);
+        Invoke(nameof(RemoveBuff), buffDuration);
 
+        if (AchievementManager.Instance == null)
+        {
+            return;
+        }
         if (AchievementManager.Instance.IsAchievementUnlocked("0"))
         {
             return;

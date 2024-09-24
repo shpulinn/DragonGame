@@ -8,6 +8,7 @@ public class CoinsManager : MonoBehaviour
     public Event OnCoinAdd;
     
     private int _currentCoins;
+    private int _currentDiamonds;
 
     private bool _isDiamondsActive = false;
     
@@ -21,12 +22,15 @@ public class CoinsManager : MonoBehaviour
     public int CurrentCoins => _currentCoins;
     public bool IsDiamondsActive => _isDiamondsActive;
 
+    public int CurrentDiamonds => _currentDiamonds;
+
     private void OnEnable()
     {
-        _saveSystem = new SaveSystem();
+        // _saveSystem = new SaveSystem();
+        _saveSystem = SaveSystem.Instance;
         _levelProgress = _saveSystem.LoadGame();
 
-        _currentCoins = _levelProgress.Coins;
+        _currentCoins = _saveSystem.GetCurrentProgress().Coins;
         
         GlobalEventManager.OnCoinCollected.AddListener(AddCoins);
         GlobalEventManager.OnProgressReached.AddListener(ActivateCoinsMultiplier);
@@ -56,8 +60,15 @@ public class CoinsManager : MonoBehaviour
                 amount *= BuffManager.Instance.GetCoinMultiplier();
             }
         }
+
         _currentCoins += amount;
-        _levelProgress.Coins = _currentCoins;
+        _saveSystem.AddCoins(amount);
+    }
+
+    public void AddDiamond()
+    {
+        _currentDiamonds++;
+        _levelProgress.Diamonds++;
     }
 
     public void ActivateCoinsMultiplier(int amount)
@@ -100,7 +111,7 @@ public class CoinsManager : MonoBehaviour
             Debug.Log("cant spend " + amount + " money");
             return false;
         }
-        if (_currentCoins - amount >= 0)
+        if (_currentCoins - amount < 0)
         {
             return false;
         }

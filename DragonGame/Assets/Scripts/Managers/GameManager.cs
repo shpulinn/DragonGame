@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -35,11 +31,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip winSound;
     [SerializeField] private AudioClip loseSound;
 
-    [Space] [Header("Buffs")] 
-    [SerializeField] private DragonScaleBuffs doubleMoney;
+    [Space] [Header("Stats")] [SerializeField]
+    private DragonStats DragonStats;
+    [SerializeField] private float immortalityDuration = 3f;
+    [SerializeField] private DragonVisual DragonVisual;
+    [Space] [SerializeField] private UIManager UIManager;
 
-    public bool _isAtiveBuff;
-    
     private int _currentCoins;
 
     private int _currentHumanCatched = 0;
@@ -57,6 +54,9 @@ public class GameManager : MonoBehaviour
     public int CurrentHumanCatched => _currentHumanCatched;
     public int MaxHumanCatchAmount => maxHumanCatchAmount;
 
+    private int _dragonsLifes = 0;
+    private bool _isImmortal = false;
+    
     public void TogglePause()
     {
         _isPaused = !_isPaused;
@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         _levelManager = FindObjectOfType<LevelManager>();
+
+        _dragonsLifes = DragonStats.MaxLives;
     }
 
     private void Start()
@@ -108,6 +110,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        saveSystem.Update();
+    }
+
     private void CatchHuman()
     {
         _currentHumanCatched++;
@@ -134,6 +141,34 @@ public class GameManager : MonoBehaviour
         _currentZoneActive--;
     }
 
+    public bool TryTakeDamage()
+    {
+        if (_isImmortal)
+            return false;
+        _dragonsLifes--;
+        if (_dragonsLifes <= 0)
+        {
+            GameOver();
+            return true;
+        }
+        EnableImmortality(immortalityDuration);
+        return true;
+    }
+
+    private void EnableImmortality(float duration)
+    {
+        _isImmortal = true;
+        Invoke(nameof(DisableImmortality), duration);
+        DragonVisual.StartFade();
+        UIManager.StartTimer(duration);
+    }
+
+    private void DisableImmortality()
+    {
+        _isImmortal = false;
+        DragonVisual.StopFade();
+    }
+
     public void GameOver()
     {
         if (!_isPaused)
@@ -143,9 +178,8 @@ public class GameManager : MonoBehaviour
         gameOverScreen.SetActive(true);
         OnGameOverEvent?.Invoke();
         _isPaused = true;
-        // при проигрыше сбрасываем количество собранных монет
-        levelProgress.Levels[levelNumber].CoinsCollected = 0;
-        saveSystem.SaveGame(levelProgress);
+        //saveSystem.SaveGame();
+        CoinsMagnetItem.IsActive = false;
     }
 
     public void GameWin()
@@ -164,6 +198,7 @@ public class GameManager : MonoBehaviour
     
     public void CompleteLevel(int levelNumber)
     {
+        /*
         if (levelProgress.Levels.ContainsKey(levelNumber))
         {
             levelProgress.Levels[levelNumber].WasCompletedBefore = true;
@@ -175,7 +210,9 @@ public class GameManager : MonoBehaviour
         }
 
         levelProgress.Coins += _currentCoins;
-        saveSystem.SaveGame(levelProgress);
+        saveSystem.SaveGame();
+        */
+        saveSystem.CompleteLevel(levelNumber,_currentCoins, saveSystem.GetCurrentProgress().Coins);
     }
 
     public void LoadNextLevel()

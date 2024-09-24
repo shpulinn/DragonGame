@@ -14,7 +14,8 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float shakeDuration = 0f;
 	
     // Amplitude of the shake. A larger value shakes the camera harder.
-    [SerializeField] private float shakeAmount = 0.7f;
+    [SerializeField] private float shakeAmountMin = 0.2f;
+    [SerializeField] private float shakeAmountMax = 0.5f;
     [SerializeField] private float decreaseFactor = 1.0f;
 	
     Vector3 _originalPos;
@@ -44,7 +45,8 @@ public class CameraShake : MonoBehaviour
     {
         if (shakeDuration > 0)
         {
-            camTransform.localPosition = _originalPos + Random.insideUnitSphere * shakeAmount;
+            float randomShakeAmount = Random.Range(shakeAmountMin, shakeAmountMax);
+            camTransform.localPosition = _originalPos + Random.insideUnitSphere * randomShakeAmount;
 			
             shakeDuration -= Time.deltaTime * decreaseFactor;
         }

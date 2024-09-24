@@ -10,12 +10,12 @@ public class Human : MonoBehaviour, ICollidable
 
     private bool _isDead = false;
 
-    private void Start()
+    protected virtual void Start()
     {
         _animator = GetComponent<Animator>();
     }
 
-    public void OnPlayerCollision()
+    public virtual void OnPlayerCollision()
     {
         if (_isDead) return;
         _isDead = true;
