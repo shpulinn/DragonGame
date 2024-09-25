@@ -46,14 +46,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 [RequireComponent(typeof(AudioSource))]
 public class Destroyable : MonoBehaviour, IDestroyable
 {
     [SerializeField] private ParticleSystem destroyingParticles;
     [SerializeField] private AudioClip explosionSound;
-    [SerializeField] private int destructionLevelNeeded = 1;
+    [SerializeField] private bool enableDestroyingAnim = true;
+    [Space] 
     
+    [SerializeField] private int destructionLevelNeeded = 1;
+    [Space]
     [SerializeField] private List<GameObject> spawnObjects; // Объекты для появления при разрушении
     [SerializeField] private float spawnChance = 0.5f; // Шанс появления объектов если destructionLevelNeeded = 0
     [SerializeField] private float spawnRadius = 2f; // Радиус разлета объектов
@@ -92,7 +96,13 @@ public class Destroyable : MonoBehaviour, IDestroyable
         // Спавн объектов
         SpawnObjects();
 
-        Destroy(gameObject);
+        if (enableDestroyingAnim)
+        {
+            transform.DOScale(Vector3.zero, .5f);
+            Destroy(gameObject, .5f);
+
+        } else
+            Destroy(gameObject);
     }
 
     private void SpawnObjects()

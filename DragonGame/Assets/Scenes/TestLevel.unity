@@ -3456,6 +3456,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss v1
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: c905dc8a6aeb29d498176a452420622d,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e279c874e2a9e5c46b1de335d932f0c3, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

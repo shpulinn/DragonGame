@@ -171,7 +171,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destroyingParticles: {fileID: 0}
   explosionSound: {fileID: 8300000, guid: d75550fef32915a479837d16b34ebc79, type: 3}
+  enableDestroyingAnim: 1
   destructionLevelNeeded: 0
+  spawnObjects: []
+  spawnChance: 0.5
+  spawnRadius: 2
+  spawnForce: 5
 --- !u!65 &111592318679709222
 BoxCollider:
   m_ObjectHideFlags: 0
